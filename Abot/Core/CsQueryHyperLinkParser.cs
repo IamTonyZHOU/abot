@@ -38,8 +38,14 @@ namespace Abot.Core
             if (HasRobotsNoFollow(crawledPage))
                 return null;
 
-            IEnumerable<string> hrefValues = crawledPage.CsQueryDocument.Select("a, area")
-            .Elements
+            IEnumerable<string> hrefValues;
+            CQ document;
+            if (string.IsNullOrEmpty(crawledPage.ContainerSelector))
+                document = crawledPage.CsQueryDocument.Select("a, area");
+            else
+                document = crawledPage.CsQueryDocument.Select(crawledPage.ContainerSelector).Select("a, area");
+
+            hrefValues = document.Elements
             .Where(e => !HasRelNoFollow(e))
             .Select(y => _cleanURLFunc != null ? _cleanURLFunc(y.GetAttribute("href")) : y.GetAttribute("href"))
             .Where(a => !string.IsNullOrWhiteSpace(a));

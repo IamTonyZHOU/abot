@@ -75,6 +75,11 @@ namespace Abot.Poco
         /// </summary>
         public int RedirectPosition { get; set; }
 
+        /// <summary>
+        /// The container of the hyperlinks, limit the children hyperlinks area.
+        /// </summary>
+        public string ContainerSelector { get; set; }
+
         public override string ToString()
         {
             return Uri.AbsoluteUri;

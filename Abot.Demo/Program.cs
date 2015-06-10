@@ -2,6 +2,9 @@
 using Abot.Crawler;
 using Abot.Poco;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Abot.Demo
 {
@@ -11,8 +14,9 @@ namespace Abot.Demo
         {
             log4net.Config.XmlConfigurator.Configure();
             PrintDisclaimer();
+            var uris = ReadFile();
 
-            Uri uriToCrawl = GetSiteToCrawl(args);
+            Uri uriToCrawl = GetSiteToCrawl(uris);
 
             IWebCrawler crawler;
 
@@ -37,6 +41,40 @@ namespace Abot.Demo
             //Not enough data being logged? Change the app.config file's log4net log level from "INFO" TO "DEBUG"
 
             PrintDisclaimer();
+        }
+        private static List<Tuple<string,string>> ReadFile()
+        {
+            // Get the file's text.
+            string whole_file = System.IO.File.ReadAllText("Book1.csv");
+
+            // Split into lines.
+            whole_file = whole_file.Replace('\n', '\r');
+            string[] lines = whole_file.Split(new char[] { '\r' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            // See how many rows and columns there are.
+            int num_rows = lines.Length;
+            int num_cols = 2;// lines[0].Split(',').Length;
+
+            // Allocate the data array.
+            //string[,] values = new string[num_rows, num_cols];
+
+            List<Tuple<string, string>> result = new List<Tuple<string, string>>();
+
+            // Load the array.
+            for (int r = 0; r < num_rows; r++)
+            {
+                
+                string[] line_r = lines[r].Split(',');
+                result.Add(new Tuple<string, string>(line_r[0], line_r[1]));
+                /*for (int c = 0; c < num_cols; c++)
+                {
+                    values[r, c] = line_r[c];
+                }*/
+            }
+
+            // Return the values.
+            return result;
         }
 
         private static IWebCrawler GetDefaultWebCrawler()
@@ -109,23 +147,24 @@ namespace Abot.Demo
             return crawler;
         }
 
-        private static Uri GetSiteToCrawl(string[] args)
+        private static Uri GetSiteToCrawl(List<Tuple<string, string>> args)
         {
-            string userInput = "";
-            if (args.Length < 1)
+            string userInputUrl = "";
+
+            if (args.Count < 1)
             {
                 System.Console.WriteLine("Please enter ABSOLUTE url to crawl:");
-                userInput = System.Console.ReadLine();
+                userInputUrl = System.Console.ReadLine();
             }
             else
             {
-                userInput = args[0];
+                userInputUrl = args[0].Item1.ToString();
             }
 
-            if (string.IsNullOrWhiteSpace(userInput))
+            if (string.IsNullOrWhiteSpace(userInputUrl))
                 throw new ApplicationException("Site url to crawl is as a required parameter");
 
-            return new Uri(userInput);
+            return new Uri(userInputUrl);
         }
 
         private static void PrintDisclaimer()

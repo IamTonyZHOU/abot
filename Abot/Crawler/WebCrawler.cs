@@ -210,13 +210,28 @@ namespace Abot.Crawler
         /// </summary>
         public virtual CrawlResult Crawl(Uri uri)
         {
-            return Crawl(uri, null);
+            return Crawl(uri, null, null);
+        }
+
+        /// <summary>
+        /// Begins a synchronous crawl using the uri param, subscribe to events to process data as it becomes available
+        /// </summary>
+        public virtual CrawlResult Crawl(Uri uri, string containerSelector)
+        {
+            return Crawl(uri, null, containerSelector);
         }
 
         /// <summary>
         /// Begins a synchronous crawl using the uri param, subscribe to events to process data as it becomes available
         /// </summary>
         public virtual CrawlResult Crawl(Uri uri, CancellationTokenSource cancellationTokenSource)
+        {
+            return Crawl(uri, cancellationTokenSource, null);
+        }
+        /// <summary>
+        /// Begins a synchronous crawl using the uri param, subscribe to events to process data as it becomes available
+        /// </summary>
+        public virtual CrawlResult Crawl(Uri uri, CancellationTokenSource cancellationTokenSource, string containerSelector)
         {
             if (uri == null)
                 throw new ArgumentNullException("uri");
@@ -252,7 +267,7 @@ namespace Abot.Crawler
 
             try
             {
-                PageToCrawl rootPage = new PageToCrawl(uri) { ParentUri = uri, IsInternal = true, IsRoot = true };
+                PageToCrawl rootPage = new PageToCrawl(uri) { ParentUri = uri, IsInternal = true, IsRoot = true, ContainerSelector = containerSelector };
                 if (ShouldSchedulePageLink(rootPage))
                     _scheduler.Add(rootPage);
 
