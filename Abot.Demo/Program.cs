@@ -34,7 +34,7 @@ namespace Abot.Demo
 
             //Start the crawl
             //This is a synchronous call
-            CrawlResult result = crawler.Crawl(uriToCrawl);
+            CrawlResult result = crawler.Crawl(uriToCrawl, null, "'.list'"); 
 
             //Now go view the log.txt file that is in the same directory as this executable. It has
             //all the statements that you were trying to read in the console window :).

@@ -40,7 +40,7 @@ namespace Abot.Core
             if (HasRobotsNoFollow(crawledPage))
                 return hrefValues;
 
-            HtmlNodeCollection aTags = crawledPage.HtmlDocument.DocumentNode.SelectNodes("//a[@href]");
+            HtmlNodeCollection aTags = crawledPage.HtmlDocument.DocumentNode.SelectNodes("//div[@class='listBox']//a[@href]"); //todo:remove the listbox
             HtmlNodeCollection areaTags = crawledPage.HtmlDocument.DocumentNode.SelectNodes("//area[@href]");
             HtmlNodeCollection canonicals = crawledPage.HtmlDocument.DocumentNode.SelectNodes("//link[@rel='canonical'][@href]");
 

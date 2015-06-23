@@ -100,6 +100,11 @@ namespace Abot.Crawler
         /// </summary>
         CrawlResult Crawl(Uri uri, CancellationTokenSource tokenSource);
 
+        // <summary>
+        /// Begins a crawl using the uri param, and can be cancelled using the CancellationToken, ContainerSelector is used to restrict the place
+        /// </summary>
+        CrawlResult Crawl(Uri uri, CancellationTokenSource cancellationTokenSource, string containerSelector);
+
         /// <summary>
         /// Dynamic object that can hold any value that needs to be available in the crawl context
         /// </summary>
