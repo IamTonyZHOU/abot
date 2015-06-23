@@ -60,7 +60,8 @@ namespace Abot.Core
 
         protected override string GetBaseHrefValue(CrawledPage crawledPage)
         {
-            string baseTagValue = crawledPage.CsQueryDocument.Select("base").Attr("href") ?? "";
+            //ref : http://www.w3.org/TR/html4/struct/links.html#edef-BASE
+            string baseTagValue = crawledPage.CsQueryDocument.Select("base").Attr("href") ?? ""; 
             return baseTagValue.Trim();
         }
 
